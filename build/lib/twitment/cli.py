@@ -24,10 +24,7 @@ from . import __version__ as VERSION
 def main():
     """Main CLI entrypoint."""
     import commands
-    """ Takes in commands in form of dictionary
-        __doc__ is a special variable that references this file's docstring
-    """
-
+    ''' Takes in commands in form of dictionary'''
     options = docopt(__doc__, version=VERSION)
 
     """
