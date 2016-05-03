@@ -29,6 +29,7 @@ def search_query(namesearch):
     query_obj.search(search_string)
 
 
+
 def main():
     arguments = docopt(__doc__, version='Twitter Search')
     # print(arguments.get('TEXT'))

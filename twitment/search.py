@@ -10,7 +10,25 @@ from tqdm import tqdm
 class ClassTwitter(object):
 
     def __init__(self):
+
         pass
+
+    def wordFrequency(self, wordslist):
+        # wordslist = wordlst.split()
+
+        dict_ = {}
+
+        for word in wordslist:
+            if word.isdigit():
+                word = int(word)
+            if word in dict_:
+                dict_[word] = dict_[word] + 1
+            else:
+                dict_[word] = 1
+        return dict_
+
+        for key, value in dict_:
+            return key, value
 
     def search(self, query):
 
@@ -39,9 +57,13 @@ class ClassTwitter(object):
             '''
 
             status_texts = [status['text'].strip() for status in statuses]
-            status_texts = [status.replace("\"", "")
+            status_texts = [status.replace('"', '')
                             for status in status_texts]
             summary = "".join(status_texts).split(" ")
+
+            print('#################################')
+            print self.wordFrequency(summary)
+
 
             if summary:
                 data_file = open('data.json', 'w')
@@ -50,5 +72,3 @@ class ClassTwitter(object):
         except:
             print("No response! Check your internet connection")
 
-    def wordFrequency():
-        pass
