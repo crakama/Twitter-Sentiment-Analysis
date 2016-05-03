@@ -2,7 +2,7 @@
 twitment
 
 Usage:
-  twitment welcome
+  twitment welcome <name>
   twitment -h | --help
   twitment --version
 Options:

@@ -1,4 +1,0 @@
-
-
-class ClassTwitter(object):
-    pass
