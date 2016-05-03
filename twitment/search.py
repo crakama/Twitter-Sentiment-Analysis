@@ -3,6 +3,8 @@ import json
 import oauth
 import requests
 import consumer_key
+from time import sleep
+from tqdm import tqdm
 
 
 class ClassTwitter(object):
@@ -18,10 +20,15 @@ class ClassTwitter(object):
             ''' search_results gets authentication from <twitter_> and
                 searches for the tweets made by <screen_name>
             '''
-            search_results = twitter_.search.tweets(
+            range_ = 10
+            for key in tqdm(range(range_)):
+                sleep(0.01)
+                search_results = twitter_.search.tweets(
                 q=query, lang='en', result_type='recent', screen_name=query)
+                # print search_results
             # import ipdb;ipdb.set_trace()
-            print search_results
+
+
             '''
               statuses is a list of dict that contains all data about the user
             '''
