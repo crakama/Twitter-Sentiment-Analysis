@@ -24,10 +24,9 @@ def search_query(namesearch):
     # print search_string
 
     # while len(search_string) <= 0:
-    print 'In the loop'
+    # print 'In the loop'
     query_obj = ClassTwitter()
     query_obj.search(search_string)
-    print 'In the loop2'
 
 
 def main():
