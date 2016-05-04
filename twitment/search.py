@@ -3,8 +3,10 @@ import json
 import oauth
 import requests
 import consumer_key
+from collections import Counter
 from time import sleep
 from tqdm import tqdm
+from prettytable import PrettyTable
 
 
 class ClassTwitter(object):
@@ -14,9 +16,12 @@ class ClassTwitter(object):
         pass
 
     def wordFrequency(self, wordslist):
-        # wordslist = wordlst.split()
-
+        """
+        Performs word frequncy,reads data stored in the json file and display it
+        """
+        limit = 10
         dict_ = {}
+        """ Perform word frequency """
 
         for word in wordslist:
             if word.isdigit():
@@ -25,10 +30,32 @@ class ClassTwitter(object):
                 dict_[word] = dict_[word] + 1
             else:
                 dict_[word] = 1
-        return dict_
+        """ Write data to the JSON file """
 
-        for key, value in dict_:
-            return key, value
+        data_file = open('data.json', 'w')
+        json.dump(dict_, data_file)
+
+        """ Read data from JSON file """
+
+        data_file = open('data.json', 'r')
+        data = json.load(data_file)
+        data_file.close()
+        # import ipdb
+        # ipdb.set_trace()
+
+        prettytable = PrettyTable(field_names=["Words", 'Word Frequency'])
+        counter_ = Counter(dict_)
+        """
+           Count function has inbuild method-most_common,
+           emitting it will pull AttributeError
+
+        """
+        table = [prettytable.add_row(row)
+                 for row in counter_.most_common()[:limit]]
+        prettytable.add_column("Rankings", [i+1 for i in range(len(table))])
+        prettytable.align["Words"], prettytable.align[
+            'Word Frequency'] = 'l', 'r'
+        print(prettytable)
 
     def search(self, query):
 
@@ -42,10 +69,9 @@ class ClassTwitter(object):
             for key in tqdm(range(range_)):
                 sleep(0.01)
                 search_results = twitter_.search.tweets(
-                q=query, lang='en', result_type='recent', screen_name=query)
+                    q=query, lang='en', result_type='recent', screen_name=query)
                 # print search_results
             # import ipdb;ipdb.set_trace()
-
 
             '''
               statuses is a list of dict that contains all data about the user
@@ -62,13 +88,12 @@ class ClassTwitter(object):
             summary = "".join(status_texts).split(" ")
 
             print('#################################')
-            print self.wordFrequency(summary)
-
+            
 
             if summary:
-                data_file = open('data.json', 'w')
-                json.dump(summary, data_file)
-                data_file.close()
+                # data_file = open('data.json', 'w')
+                # json.dump(summary, data_file)
+                # data_file.close()
+                self.wordFrequency(summary)
         except:
             print("No response! Check your internet connection")
-
