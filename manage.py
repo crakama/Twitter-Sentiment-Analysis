@@ -11,6 +11,7 @@ Options:
 
 """
 from docopt import docopt
+
 from twitment.search import ClassTwitter
 
 
@@ -32,8 +33,9 @@ def search_query(namesearch):
 
 def main():
     arguments = docopt(__doc__, version='Twitter Search')
-    # print(arguments.get('TEXT'))
-    print("-------------------")
+
+
+    print("########################################################################################################################")
     namesearch = ' '.join(arguments['TEXT'])
     search_query(namesearch)
 

@@ -3,6 +3,7 @@ import json
 import oauth
 import requests
 import consumer_key
+from alchemyapi import AlchemyAPI
 from collections import Counter
 from time import sleep
 from tqdm import tqdm
@@ -40,22 +41,44 @@ class ClassTwitter(object):
         data_file = open('data.json', 'r')
         data = json.load(data_file)
         data_file.close()
-        # import ipdb
+        # # import ipdb
         # ipdb.set_trace()
 
         prettytable = PrettyTable(field_names=["Words", 'Word Frequency'])
-        counter_ = Counter(dict_)
+        counter_ = list(Counter(data).items())
+
         """
            Count function has inbuild method-most_common,
            emitting it will pull AttributeError
 
         """
         table = [prettytable.add_row(row)
-                 for row in counter_.most_common()[:limit]]
+                 for row in counter_[:limit]]
         prettytable.add_column("Rankings", [i+1 for i in range(len(table))])
         prettytable.align["Words"], prettytable.align[
             'Word Frequency'] = 'l', 'r'
         print(prettytable)
+        # import ipdb; ipdb.set_trace()
+
+        newList = []
+        for key in counter_:
+            for row in key:
+                newList.append(row)
+        lis_ = str(newList)
+
+
+
+        self.sentimentanalysis(lis_)
+
+    def sentimentanalysis(self,text_):
+        """
+           Does sentiment analysis using SQLAlchemy API
+        """
+        alchemyapi = AlchemyAPI()
+        response = alchemyapi.sentiment("text", text_)
+
+        print "Sentiment: ", response["docSentiment"]["type"]
+
 
     def search(self, query):
 
@@ -85,15 +108,17 @@ class ClassTwitter(object):
             status_texts = [status['text'].strip() for status in statuses]
             status_texts = [status.replace('"', '')
                             for status in status_texts]
+            # import ipdb;ipdb.set_trace()
             summary = "".join(status_texts).split(" ")
 
-            print('#################################')
-            
+
+            print('#############################################################')
 
             if summary:
                 # data_file = open('data.json', 'w')
                 # json.dump(summary, data_file)
                 # data_file.close()
                 self.wordFrequency(summary)
-        except:
+        except Exception as e:
+            print e
             print("No response! Check your internet connection")
