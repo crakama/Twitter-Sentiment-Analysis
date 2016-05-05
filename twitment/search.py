@@ -24,20 +24,26 @@ class ClassTwitter(object):
         # stopwords = open('stop_words.txt', 'r').read().split('')
         with open(os.path.join(path, 'stop_words.txt'), "r+") as f:
             data = f.readlines()
+            data = data[0].split(",")
 
-        cleanwords = []
-        dirt = []
-        for word in dirtywords:
-            if word.lower() in data:
-                dirt.append(word)
-            else:
-                cleanwords.append(word)
+            cleanwords = []
+            dirt = []
+            for word in dirtywords:
+
+                if word.lower() in data:
+                    dirt.append(word)
+                else:
+                    cleanwords.append(word)
+
+            return cleanwords
+
 
     def wordFrequency(self, wordslist):
         """
             Performs word frequncy,reads data stored in the json file
             and display it
         """
+        wordslist = self.stop_words(wordslist)
         limit = 20
         dict_ = {}
         """ Perform word frequency """
@@ -67,9 +73,8 @@ class ClassTwitter(object):
         newList = []
         lst = list(counter_)
         for key in lst:
-            for row in key:
-                newList.append(row)
-        lis_ = self.stop_words(str(newList))
+            newList.append(key)
+        lis_ = newList
 
         """
            Count function has inbuild method-most_common,
