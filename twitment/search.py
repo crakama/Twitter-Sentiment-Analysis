@@ -9,6 +9,9 @@ from collections import Counter
 from time import sleep
 from tqdm import tqdm
 from prettytable import PrettyTable
+# Import the helper gateway class
+from AfricasTalkingGateway import AfricasTalkingGateway, AfricasTalkingGatewayException
+
 
 file_path = os.path.dirname(os.path.abspath(__file__))
 path = os.path.join(file_path)
@@ -43,8 +46,8 @@ class ClassTwitter(object):
             Performs word frequncy,reads data stored in the json file
             and display it
         """
-        wordslist = self.stop_words(wordslist)
-        limit = 40
+        self.wordslist = self.stop_words(wordslist)
+        limit = 10
         dict_ = {}
         """ Perform word frequency """
 
@@ -69,12 +72,6 @@ class ClassTwitter(object):
         # import ipdb; ipdb.set_trace()
         prettytable = PrettyTable(field_names=["Words", 'Word Frequency'])
         counter_ = Counter(data)
-
-        newList = []
-        lst = list(counter_)
-        for key in lst:
-            newList.append(key)
-        lis_ = newList
 
         """
            Count function has inbuild method-most_common,
@@ -101,7 +98,7 @@ class ClassTwitter(object):
 
         if "" in text_.keys() and len(text_) < 2:
 
-            print "No tweets were found to analyse!!"
+            print "No tweets to analyse were found!!"
         else:
             response = alchemyapi.sentiment("text", text_)
             print "Sentiment: ", response["docSentiment"]["type"]
@@ -145,3 +142,32 @@ class ClassTwitter(object):
         except Exception as e:
             print e
             print("No response! Check your internet connection")
+
+    def sendTweet(self,num):
+
+        username = "CATHERINERAKAMA"
+        apikey = "676dbd926bbb04fa69ce90ee81d3f5ffee2692aaf80eb5793bd70fe93e77dc2e"
+
+        to = num
+
+        """ Read data from JSON file """
+        data_file = open('data.json', 'r')
+        data = json.load(data_file)
+        data_file.close()
+
+        message = data
+        # Create a new instance of our awesome gateway class
+        gateway = AfricasTalkingGateway(username, apikey)
+        # Any gateway errors will be captured by our custom Exception class below,
+        # so wrap the call in a try-catch block
+        try:
+            # Thats it, hit send and we'll take care of the rest.
+            results = gateway.sendMessage(to, message)
+
+            for recipient in results:
+                # status is either "Success" or "error message"
+                print 'Message sent to number=%s;status=%s' % (recipient['number'],
+                                                                    recipient[
+                                                                        'status'])
+        except AfricasTalkingGatewayException, e:
+            print 'Encountered an error while sending: %s' % str(e)

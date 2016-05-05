@@ -60,14 +60,14 @@ class Sentiment (cmd.Cmd):
 
     intro = "==========================================================================================================================\n \n" + \
         "How to use this application on commandline(CMD): \n\n" + \
-        "1. To Search for tweets by username                ===>$ manage.py search <twitter_name>\n" + \
-        "2. Perform word frequency on the tweets            ===>$ manage.py freq \n" + \
-        "3. To perform Setiment Analysis on tweets          ===>$ manage.py analyse\n\n\n"
+        "1. To Search for tweets by username                ===>$ manage search <twitter_name>\n" + \
+        "2. Perform word frequency on the tweets            ===>$ manage freq \n" + \
+        "3. To perform Setiment Analysis on tweets          ===>$ manage analyse\n\n\n"
 
 
 
     f = Figlet(font='slant')
-    print f.renderText('WELCOME TO SENTIMENT ANALYSIS')
+    print f.renderText('Welcome To Twitter Sentiment Analysis')
 
     prompt = "(manage)"
 
@@ -75,8 +75,8 @@ class Sentiment (cmd.Cmd):
     def do_send(self, arg):
         """Usage: send <number>"""
         mobilenum = arg['<number>']
-        send_obj = SMS()
-        send_obj.send(mobilenum)
+        send_obj = ClassTwitter()
+        send_obj.sendTweet(mobilenum)
 
     @cliparser
     def start(program):
@@ -93,7 +93,8 @@ class Sentiment (cmd.Cmd):
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
-        print('Good Bye!')
+        q = Figlet(font='slant')
+        print q.renderText('Good Bye!')
         exit()
 
 
