@@ -1,0 +1,5 @@
+Alchemy sentiment analysis: fb12d2c55fff36e1e268584e261b6b010b37279f
+
+
+
+Africa Is Talking: 676dbd926bbb04fa69ce90ee81d3f5ffee2692aaf80eb5793bd70fe93e77dc2e

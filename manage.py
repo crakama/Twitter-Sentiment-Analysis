@@ -3,7 +3,7 @@
 Usage:
   manage start  [TEXT]...
   manage search <name>
-  manage send [TEXT]...
+  manage send <number>
   manage (-i | --interactive)
   manage (-h | --help)
   manage --version
@@ -19,7 +19,7 @@ from docopt import docopt, DocoptExit
 # from tkinter import *
 # from tkinter import ttk
 import cmd
-
+from pyfiglet import Figlet
 from twitment.search import ClassTwitter
 from twitment.sendSMS import SMS
 
@@ -64,10 +64,17 @@ class Sentiment (cmd.Cmd):
         "2. Perform word frequency on the tweets            ===>$ manage.py freq \n" + \
         "3. To perform Setiment Analysis on tweets          ===>$ manage.py analyse\n\n\n"
 
+
+
+    f = Figlet(font='slant')
+    print f.renderText('WELCOME TO SENTIMENT ANALYSIS')
+
     prompt = "(manage)"
 
-    def sendAnalysis(num):
-        mobilenum = str(num)
+    @cliparser
+    def do_send(self, arg):
+        """Usage: send <number>"""
+        mobilenum = arg['<number>']
         send_obj = SMS()
         send_obj.send(mobilenum)
 

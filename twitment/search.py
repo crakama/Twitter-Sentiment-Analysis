@@ -44,7 +44,7 @@ class ClassTwitter(object):
             and display it
         """
         wordslist = self.stop_words(wordslist)
-        limit = 20
+        limit = 40
         dict_ = {}
         """ Perform word frequency """
 
@@ -98,9 +98,13 @@ class ClassTwitter(object):
            Does sentiment analysis using SQLAlchemy API
         """
         alchemyapi = AlchemyAPI()
-        response = alchemyapi.sentiment("text", text_)
 
-        print "Sentiment: ", response["docSentiment"]["type"]
+        if "" in text_.keys() and len(text_) < 2:
+
+            print "No tweets were found to analyse!!"
+        else:
+            response = alchemyapi.sentiment("text", text_)
+            print "Sentiment: ", response["docSentiment"]["type"]
 
     def search(self, query):
 
