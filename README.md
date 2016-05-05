@@ -15,13 +15,13 @@ This document gives you a quick overview of:
 
 ###2. Features of the application:
 
-####a. Use the Twitter API to fetch tweets
+* Use the Twitter API to fetch tweets
 
-####b. Perform a word-frequency analysis
+* Perform a word-frequency analysis
 
-####c. Perform sentiment analysis using the Alchemy API
+* Perform sentiment analysis using the Alchemy API
 
-####d. Send SMS to mobile number
+* Send SMS to mobile number
 
 
 
@@ -57,11 +57,11 @@ The program can be run in the following ways:
 
 The correct way to use this program is as follows:
 
-####a. Install all requirements from requirements.txt file
+* Install all requirements from requirements.txt file
 
-####b. cd to the project folder and run ``` manage.py``` file
+* cd to the project folder and run ``` manage.py``` file
 
-####c. Make sure SMS and sentiment analysis API are in the folders.
+* Make sure SMS and sentiment analysis API are in the folders.
 
 If you get a ```key error``` it might be API registration issues
 
