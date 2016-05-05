@@ -3,6 +3,8 @@ import json
 import oauth
 import requests
 import consumer_key
+import nltk
+from nltk.corpus import stopwords
 from alchemyapi import AlchemyAPI
 from collections import Counter
 from time import sleep
@@ -41,11 +43,15 @@ class ClassTwitter(object):
         data_file = open('data.json', 'r')
         data = json.load(data_file)
         data_file.close()
-        # # import ipdb
-        # ipdb.set_trace()
+
+
 
         prettytable = PrettyTable(field_names=["Words", 'Word Frequency'])
         counter_ = list(Counter(data).items())
+
+        
+
+
 
         """
            Count function has inbuild method-most_common,
@@ -66,9 +72,20 @@ class ClassTwitter(object):
                 newList.append(row)
         lis_ = str(newList)
 
+        stopwords(lis_)
+
 
 
         self.sentimentanalysis(lis_)
+
+    def stopwords(self, words):
+        """ Remove the stop words  """
+
+        stops = set(stopwords.words('english'))
+        for word in counter_:
+            for w in word.split():
+                if w.lower() not in stops:
+                    print w
 
     def sentimentanalysis(self,text_):
         """
@@ -109,16 +126,13 @@ class ClassTwitter(object):
             status_texts = [status.replace('"', '')
                             for status in status_texts]
             # import ipdb;ipdb.set_trace()
-            summary = "".join(status_texts).split(" ")
+            fetchedtweets = "".join(status_texts).split(" ")
 
+            if fetchedtweets:
 
-            print('#############################################################')
-
-            if summary:
-                # data_file = open('data.json', 'w')
-                # json.dump(summary, data_file)
-                # data_file.close()
-                self.wordFrequency(summary)
+                self.wordFrequency(fetchedtweets)
+            else:
+                return "No tweet has been fetched"
         except Exception as e:
             print e
             print("No response! Check your internet connection")
