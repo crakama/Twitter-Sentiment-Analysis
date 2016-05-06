@@ -1,8 +1,9 @@
 """Twitter search.
 
 Usage:
-  manage start  [TEXT]...
+  manage freq  <wordfreq>
   manage search <name>
+  manage analyse <analyse>
   manage send <number>
   manage (-i | --interactive)
   manage (-h | --help)
@@ -16,12 +17,13 @@ Options:
 """
 import sys
 from docopt import docopt, DocoptExit
-# from tkinter import *
-# from tkinter import ttk
 import cmd
 from pyfiglet import Figlet
 from twitment.search import ClassTwitter
 from twitment.sendSMS import SMS
+from colorama import init
+from colorama import Fore, Back, Style
+init()
 
 
 def cliparser(func):
@@ -60,14 +62,15 @@ class Sentiment (cmd.Cmd):
 
     intro = "==========================================================================================================================\n \n" + \
         "How to use this application on commandline(CMD): \n\n" + \
-        "1. To Search for tweets by username                ===>$ manage search <twitter_name>\n" + \
-        "2. Perform word frequency on the tweets            ===>$ manage freq \n" + \
-        "3. To perform Setiment Analysis on tweets          ===>$ manage analyse\n\n\n"
+        "1. To Search for tweets by username                $ manage search <twitter_name>\n" + \
+        "2. Perform word frequency on the tweets            $ manage <wordfreq> \n" + \
+        "2. Send fetched tweet as an SMS                    $ manage  send\n" + \
+        "3. To perform Setiment Analysis on tweets          $ manage analyse\n\n\n"
 
-
-
-    f = Figlet(font='slant')
-    print f.renderText('Welcome To Twitter Sentiment Analysis')
+    print Fore.YELLOW + "  "
+    f = Figlet(font='basic')
+    print f.renderText('Twitter Sentiment Analysis')
+    print(Style.RESET_ALL)
 
     prompt = "(manage)"
 
@@ -79,8 +82,17 @@ class Sentiment (cmd.Cmd):
         send_obj.sendTweet(mobilenum)
 
     @cliparser
-    def start(program):
-        pass
+    def do_analyse(self, arg):
+        """Usage: analyse <analyse>"""
+        print "To analyse, run a search analysis, will happen automatically"
+
+
+    @cliparser
+    def do_freq(self,arg):
+        """Usage: freq <wordfreq>"""
+        freq_string = str(arg)
+        freq_obj = ClassTwitter()
+        freq_obj.frequency(freq_string)
 
     @cliparser
     def do_search(self, arg):
@@ -93,7 +105,7 @@ class Sentiment (cmd.Cmd):
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
-        q = Figlet(font='slant')
+        q = Figlet(font='basic')
         print q.renderText('Good Bye!')
         exit()
 
@@ -106,12 +118,4 @@ if opt['--interactive']:
 
 print(opt)
 
-
-
-def namesearch(args):
-    """
-           search_query receives commandline args as a string argument and
-           passes it to search function defined in Classtwitter module
-    """
-    pass
 

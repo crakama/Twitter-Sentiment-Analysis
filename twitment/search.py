@@ -8,20 +8,31 @@ from alchemyapi import AlchemyAPI
 from collections import Counter
 from time import sleep
 from tqdm import tqdm
+
 from prettytable import PrettyTable
 # Import the helper gateway class
 from AfricasTalkingGateway import AfricasTalkingGateway, AfricasTalkingGatewayException
+from colorama import init
+from colorama import Fore, Back, Style
+init()
 
 
 file_path = os.path.dirname(os.path.abspath(__file__))
 path = os.path.join(file_path)
+
 
 class ClassTwitter(object):
 
     def __init__(self):
 
         pass
+
+    def colorify(text, colors):
+        """Prefix and suffix text to render terminal color"""
+
+ 
     # import ipdb; ipdb.set_trace()
+
     def stop_words(self, dirtywords):
         """ Remove the stop words  """
         # stopwords = open('stop_words.txt', 'r').read().split('')
@@ -39,7 +50,6 @@ class ClassTwitter(object):
                     cleanwords.append(word)
 
             return cleanwords
-
 
     def wordFrequency(self, wordslist):
         """
@@ -70,7 +80,8 @@ class ClassTwitter(object):
         data_file.close()
 
         # import ipdb; ipdb.set_trace()
-        prettytable = PrettyTable(field_names=["Words", 'Word Frequency'])
+        print Fore.GREEN + "  "
+        prettytable = PrettyTable(field_names=["Words", 'Word Frequency'],header_color='yellow,bold')
         counter_ = Counter(data)
 
         """
@@ -80,34 +91,43 @@ class ClassTwitter(object):
         """
         table = [prettytable.add_row(row)
                  for row in counter_.most_common()[:limit]]
-        prettytable.add_column("Rankings", [i+1 for i in range(len(table))])
+
+        # prettytable.add_column("Rankings", [i+1 for i in range(len(table))])
         prettytable.align["Words"], prettytable.align[
             'Word Frequency'] = 'l', 'r'
         print(prettytable)
 
-        # import ipdb; ipdb.set_trace()
+        print(Style.RESET_ALL)
 
         self.sentimentanalysis(dict_)
 
     def sentimentanalysis(self, text_):
-
         """
            Does sentiment analysis using SQLAlchemy API
         """
         alchemyapi = AlchemyAPI()
-
+        # import ipdb; ipdb.set_trace()
         if "" in text_.keys() and len(text_) < 2:
 
             print "No tweets to analyse were found!!"
         else:
             response = alchemyapi.sentiment("text", text_)
-            print "Sentiment: ", response["docSentiment"]["type"]
+            sentrep = response["docSentiment"]["type"]
+            lst = [sentrep]
+
+        prettytable = PrettyTable(['Sentiment Type'])
+
+        t = prettytable.add_row(lst) 
+
+        print prettytable
+  
+
 
     def search(self, query):
 
         try:
             twitter_ = consumer_key.authenticate()
-            # import ipdb;ipdb.set_trace()
+
             ''' search_results gets authentication from <twitter_> and
                 searches for the tweets made by <screen_name>
             '''
@@ -115,9 +135,7 @@ class ClassTwitter(object):
             for key in tqdm(range(range_)):
                 sleep(0.01)
                 search_results = twitter_.search.tweets(
-                    q = query, lang = 'en', result_type = 'recent',screen_name = query)
-
-            # import ipdb;ipdb.set_trace()
+                    q=query, lang='en', result_type='recent', screen_name=query)
 
             '''
               statuses is a list of dict that contains all data about the user
@@ -143,7 +161,7 @@ class ClassTwitter(object):
             print e
             print("No response! Check your internet connection")
 
-    def sendTweet(self,num):
+    def sendTweet(self, num):
 
         username = "CATHERINERAKAMA"
         apikey = "676dbd926bbb04fa69ce90ee81d3f5ffee2692aaf80eb5793bd70fe93e77dc2e"
@@ -167,7 +185,7 @@ class ClassTwitter(object):
             for recipient in results:
                 # status is either "Success" or "error message"
                 print 'Message sent to number=%s;status=%s' % (recipient['number'],
-                                                                    recipient[
-                                                                        'status'])
+                                                               recipient[
+                    'status'])
         except AfricasTalkingGatewayException, e:
             print 'Encountered an error while sending: %s' % str(e)
