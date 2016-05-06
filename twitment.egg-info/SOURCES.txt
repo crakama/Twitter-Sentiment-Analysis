@@ -1,0 +1,15 @@
+MANIFEST.in
+README.rst
+setup.cfg
+setup.py
+alchemyapi_python/__init__.py
+alchemyapi_python/alchemyapi.py
+alchemyapi_python/example.py
+alchemyapi_python/tests.py
+tests/test_cli.py
+tests/commands/test_welcome.py
+twitment/AfricasTalkingGateway.py
+twitment/__init__.py
+twitment/consumer_key.py
+twitment/search.py
+twitment/sendSMS.py

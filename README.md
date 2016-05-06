@@ -11,6 +11,11 @@ This document gives you a quick overview of:
 
 ###1.Project Structure:
 
+* ```bc_7_twitment folder``` is the root folder of the project that carries the whole project.
+
+* ```manage.py``` file is the program entry point. Uses docopt to read commands passed for the commandline
+* ```Setup.py``` file contains configuration of the program
+* ``` twitment ``` folder carries files that do various operations such as search, wordfrequency ans message sending 
 
 
 ###2. Features of the application:
