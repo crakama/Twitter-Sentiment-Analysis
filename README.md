@@ -42,7 +42,11 @@ In particular, this program requires you to have the following libraries:
 
 ###4. Running the Program
 
-The program can be run in the following ways:
+The program can be run in the following way:
+Use the following test cases
+
+* Ma3Route
+* masaku
 
 * Command Line method:
 	

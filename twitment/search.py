@@ -10,7 +10,7 @@ from time import sleep
 from tqdm import tqdm
 
 from prettytable import PrettyTable
-# Import the helper gateway class
+
 from AfricasTalkingGateway import AfricasTalkingGateway, AfricasTalkingGatewayException
 from colorama import init
 from colorama import Fore, Back, Style
@@ -30,26 +30,18 @@ class ClassTwitter(object):
     def colorify(text, colors):
         """Prefix and suffix text to render terminal color"""
 
- 
-    # import ipdb; ipdb.set_trace()
+
 
     def stop_words(self, dirtywords):
         """ Remove the stop words  """
-        # stopwords = open('stop_words.txt', 'r').read().split('')
-        with open(os.path.join(path, 'stop_words.txt'), "r+") as f:
-            data = f.readlines()
-            data = data[0].split(",")
+        cleanwords = []
+        dirt = []
+        with open('stop_words.json','r') as f:
+            data = json.loads(f.read())
+            stopwords = data['stopwords']
+            print stopwords
 
-            cleanwords = []
-            dirt = []
-            for word in dirtywords:
-
-                if word.lower() in data:
-                    dirt.append(word)
-                else:
-                    cleanwords.append(word)
-
-            return cleanwords
+        return [word for word in dirtywords if word not in stopwords]
 
     def wordFrequency(self, wordslist):
         """
@@ -92,7 +84,7 @@ class ClassTwitter(object):
         table = [prettytable.add_row(row)
                  for row in counter_.most_common()[:limit]]
 
-        # prettytable.add_column("Rankings", [i+1 for i in range(len(table))])
+        prettytable.add_column("Rankings", [i+1 for i in range(len(table))])
         prettytable.align["Words"], prettytable.align[
             'Word Frequency'] = 'l', 'r'
         print(prettytable)
